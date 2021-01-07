@@ -12,7 +12,6 @@ reddit = praw.Reddit(client_id = 'SoZ-V_ZEXQdCKw',
 subreddit = reddit.subreddit("Animemes")
 table = []
 for submission in subreddit.hot(limit=1000):
-    print(submission.url)
     table.append(submission.url)
 
 
