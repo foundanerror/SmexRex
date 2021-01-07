@@ -1,5 +1,7 @@
 import discord, os
 from discord.ext import commands, tasks
+import praw
+
 
 client = commands.Bot(command_prefix = "!", intents=discord.Intents.all())
 
