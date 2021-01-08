@@ -4,17 +4,15 @@ import random
 import requests
 import praw
 import io
-reddit = praw.Reddit(client_id = 'SoZ-V_ZEXQdCKw', 
-                    client_secret = 'AqpnUH2WJ0iMBXa1Sl8A53zEyjDTYg', 
-                    user_agent = 'SmartSlayewer1')
+import sqlite3
 
 
-subreddit = reddit.subreddit("Animemes")
-table = []
-for submission in subreddit.hot(limit=1000):
-    table.append(submission.url)
+conn = sqlite3.connect("bot_memes.db")
+c = conn.cursor()
 
-
+c.execute("SELECT * FROM bot_memes")
+limit = c.fetchall()
+conn.commit()
 
 class Example(commands.Cog):
     def __init__(self, client):
@@ -30,9 +28,14 @@ class Example(commands.Cog):
     
     @commands.command()
     async def meme(self,ctx):
-        meme = random.randint(1,len(table))
-        print(len(table))
-        link = table[meme]
+        l = len(limit)
+        meme = random.randint(1, l)
+        
+
+        c.execute(f"SELECT * FROM bot_memes WHERE rowid = {meme}")
+        items = c.fetchall()
+        #print(meme)
+        link = items[0][0]
         r = requests.get(link, stream=True)
         
         image_bytes = io.BytesIO(r.content)
@@ -40,7 +43,7 @@ class Example(commands.Cog):
         #create a file object in discordpy library
         f = discord.File(image_bytes, 'meme.jpg')
 
-        # send image in the channel
+        #send image in the channel
         await ctx.send(file=f)
 
 def setup(client):
