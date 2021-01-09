@@ -61,6 +61,7 @@ class Example(commands.Cog):
         embed.set_footer(text=f'Memes From Reddit, UpVote: 👍{upvotes}')
         embed.set_author(name = 'Gay Haven', icon_url=icon)
         embed.set_image(url = str(link))
+        embed.set_thumbnail(url = icon)
         await ctx.send(embed = embed)
         #await ctx.send(file=f)
 
