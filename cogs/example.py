@@ -5,6 +5,7 @@ import requests
 import praw
 import io
 import sqlite3
+from datetime import datetime
 
 
 conn = sqlite3.connect("bot_memes.db")
@@ -17,6 +18,8 @@ conn.commit()
 class Example(commands.Cog):
     def __init__(self, client):
         self.client = client
+        client.remove_command("help")
+
     
     @commands.Cog.listener()
     async def on_ready(self):
@@ -24,7 +27,7 @@ class Example(commands.Cog):
     
     @commands.command()
     async def ping(self, ctx):
-       await ctx.send("pong")
+       await ctx.send("Pong")
     
     @commands.command()
     async def meme(self,ctx):
@@ -35,16 +38,39 @@ class Example(commands.Cog):
         c.execute(f"SELECT * FROM bot_memes WHERE rowid = {meme}")
         items = c.fetchall()
         #print(meme)
+        icon = ctx.guild.icon_url
         link = items[0][0]
-        r = requests.get(link, stream=True)
+        name = items[0][1]
+        author = items[0][2]
+        permaLink = items[0][3]
+        upvotes = items[0][4]
+
+        #r = requests.get(link, stream=True)
         
-        image_bytes = io.BytesIO(r.content)
+        #image_bytes = io.BytesIO(r.content)
 
         #create a file object in discordpy library
-        f = discord.File(image_bytes, 'meme.jpg')
+        #f = discord.File(image_bytes, 'meme.png')
 
         #send image in the channel
-        await ctx.send(file=f)
+        embed = discord.Embed(
+            title = 'Heres a nice juicy meme for you',
+            description = f"[{author}](https://www.reddit.com{permaLink})",
+            colour = discord.Colour.green(),
+            timestamp = datetime.utcnow()
+        )
+        embed.set_footer(text='Memes From Reddit')
+        embed.set_author(name = 'Gay Haven', icon_url=icon)
+        embed.set_image(url = str(link))
+        await ctx.send(embed = embed)
+        #await ctx.send(file=f)
+
+    @commands.command()
+    async def help(self, ctx):
+        print("hmmmm")
+        
+
 
 def setup(client):
     client.add_cog(Example(client))
+    print("setup")

@@ -3,7 +3,7 @@ from discord.ext import commands, tasks
 import praw
 
 
-client = commands.Bot(command_prefix = "!", intents=discord.Intents.all())
+client = commands.Bot(command_prefix = "$", intents=discord.Intents.all())
 
 @client.command()
 async def load(ctx, extension):
@@ -14,6 +14,7 @@ async def load(ctx, extension):
 async def unload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
     print("unloaded")
+    
 
 
 
