@@ -20,11 +20,6 @@ class Example(commands.Cog):
         self.client = client
         client.remove_command("help")
 
-    
-    @commands.Cog.listener()
-    async def on_ready(self):
-        print("Bot is online.")
-    
     @commands.command()
     async def ping(self, ctx):
        await ctx.send("Pong")
