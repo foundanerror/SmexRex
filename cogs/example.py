@@ -37,7 +37,6 @@ class Example(commands.Cog):
 
         c.execute(f"SELECT * FROM bot_memes WHERE rowid = {meme}")
         items = c.fetchall()
-        #print(meme)
         icon = ctx.guild.icon_url
         link = items[0][0]
         name = items[0][1]
@@ -54,12 +53,12 @@ class Example(commands.Cog):
 
         #send image in the channel
         embed = discord.Embed(
-            title = 'Heres a nice juicy meme for you',
+            title = name,
             description = f"[{author}](https://www.reddit.com{permaLink})",
             colour = discord.Colour.green(),
             timestamp = datetime.utcnow()
         )
-        embed.set_footer(text='Memes From Reddit')
+        embed.set_footer(text=f'Memes From Reddit, UpVote = :thumbsup: {upvotes}')
         embed.set_author(name = 'Gay Haven', icon_url=icon)
         embed.set_image(url = str(link))
         await ctx.send(embed = embed)
