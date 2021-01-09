@@ -58,7 +58,7 @@ class Example(commands.Cog):
             colour = discord.Colour.green(),
             timestamp = datetime.utcnow()
         )
-        embed.set_footer(text=f'Memes From Reddit, UpVote = :thumbsup: {upvotes}')
+        embed.set_footer(text=f'Memes From Reddit, UpVote: 👍{upvotes}')
         embed.set_author(name = 'Gay Haven', icon_url=icon)
         embed.set_image(url = str(link))
         await ctx.send(embed = embed)
