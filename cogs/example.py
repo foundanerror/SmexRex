@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import random
+import requests
 import praw
 import io
 import sqlite3
@@ -38,6 +39,14 @@ class Example(commands.Cog):
         permaLink = items[0][3]
         upvotes = items[0][4]
 
+        #r = requests.get(link, stream=True)
+        
+        #image_bytes = io.BytesIO(r.content)
+
+        #create a file object in discordpy library
+        #f = discord.File(image_bytes, 'meme.png')
+
+        #send image in the channel
         embed = discord.Embed(
             title = name,
             description = f"[{author}](https://www.reddit.com{permaLink})",
