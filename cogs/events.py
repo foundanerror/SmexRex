@@ -20,7 +20,7 @@ class Events(commands.Cog):
     async def change_status(self):
         await self.client.change_presence(activity=discord.Activity(type= discord.ActivityType.watching,name= f'Over {len(self.client.guilds)} Servers'))
     
-
+    
 
 def setup(client):
     client.add_cog(Events(client))

@@ -19,6 +19,7 @@ class Example(commands.Cog):
     def __init__(self, client):
         self.client = client
         client.remove_command("help")
+        self.launch_time = datetime.utcnow()
 
     @commands.command()
     async def ping(self, ctx):
@@ -63,7 +64,27 @@ class Example(commands.Cog):
     @commands.command()
     async def help(self, ctx):
         print("hmmmm")
-        
+
+    
+    @commands.command()
+    @commands.bot_has_permissions(manage_messages=True)
+    async def purge(self,ctx,Ammount : int):
+        await ctx.channel.purge(limit = Ammount)
+
+    @commands.command()
+    async def uptime(self,ctx):
+        delta_uptime = datetime.utcnow() - self.launch_time
+        hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
+        minutes, seconds = divmod(remainder, 60)
+        days, hours = divmod(hours, 24)
+        if days == 0 and hours == 0 and minutes == 0:
+            await ctx.send(f"{seconds}s")
+        elif days == 0 and hours == 0:
+            await ctx.send(f'{minutes}m, {seconds}s')
+        elif days == 0:
+            await ctx.send(f'{hours}h, {minutes}m, {seconds}s')
+        else:
+            await ctx.send(f'{days}d, {hours}h, {minutes}m, {seconds}s')
 
 
 def setup(client):
