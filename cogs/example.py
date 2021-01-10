@@ -86,8 +86,8 @@ class Example(commands.Cog):
             await ctx.send(f'{days}d, {hours}h, {minutes}m, {seconds}s')
 
     @commands.command()
+    @commands.bot_has_permissions(send_messages=True)
     async def ping(self,ctx):
-        before = time.monotonic()
         message = await ctx.send("Pong!")
         ping = self.client.latency
         await message.edit(content=f"Pong!  `{int(ping)}ms`")
