@@ -6,6 +6,7 @@ import praw
 import io
 import sqlite3
 from datetime import datetime
+import time
 
 
 conn = sqlite3.connect("bot_memes.db")
@@ -20,10 +21,8 @@ class Example(commands.Cog):
         self.client = client
         client.remove_command("help")
         self.launch_time = datetime.utcnow()
+        print(self.launch_time)
 
-    @commands.command()
-    async def ping(self, ctx):
-       await ctx.send("Pong")
     
     @commands.command()
     async def meme(self,ctx):
@@ -86,6 +85,13 @@ class Example(commands.Cog):
         else:
             await ctx.send(f'{days}d, {hours}h, {minutes}m, {seconds}s')
 
+    @commands.command()
+    async def ping(self,ctx):
+        before = time.monotonic()
+        message = await ctx.send("Pong!")
+        ping = self.client.latency
+        await message.edit(content=f"Pong!  `{int(ping)}ms`")
+        print(f'Ping {int(ping)}ms')
 
 def setup(client):
     client.add_cog(Example(client))
