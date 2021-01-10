@@ -1,4 +1,4 @@
-import discord,random,praw,io,sqlite3
+import discord,random,requests,praw,io,sqlite3
 from discord.ext import commands, tasks
 from datetime import datetime
 from itertools import cycle
