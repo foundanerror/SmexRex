@@ -68,10 +68,10 @@ class Example(commands.Cog):
             colour = discord.Colour.green(),
             timestamp = datetime.utcnow()
         )
-        embed.add_field(name = '.ping',value = '`Returns bot latency`',inline = False)
-        embed.add_field(name = '.purge',value = '`Purges Specified amount of messages`',inline = False)
-        embed.add_field(name = '.uptime',value = '`Returns bot uptime`',inline = False)
-        embed.add_field(name = '.meme',value = '`Returns meme from reddit`',inline = False)
+        embed.add_field(name = '../ping',value = '`Returns bot latency`',inline = False)
+        embed.add_field(name = '../purge',value = '`Purges Specified amount of messages`',inline = False)
+        embed.add_field(name = '../uptime',value = '`Returns bot uptime`',inline = False)
+        embed.add_field(name = '../meme',value = '`Returns meme from reddit`',inline = False)
         await ctx.send(embed = embed)
     
     @commands.command()
