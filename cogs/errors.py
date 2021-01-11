@@ -11,7 +11,12 @@ class Errors(commands.Cog):
         
     @commands.Cog.listener()
     async def on_command_error(self,ctx,error):
-        await ctx.send(error)
+        try:
+           await ctx.send(error)
+        except:
+            print('error')
+    
+            
         
 
     

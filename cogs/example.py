@@ -62,8 +62,17 @@ class Example(commands.Cog):
 
     @commands.command()
     async def help(self, ctx):
-        print("hmmmm")
-
+        embed = discord.Embed(
+            title = 'Help',
+            description = 'Commands listed below',
+            colour = discord.Colour.green(),
+            timestamp = datetime.utcnow()
+        )
+        embed.add_field(name = '.ping',value = '`Returns bot latency`',inline = False)
+        embed.add_field(name = '.purge',value = '`Purges Specified amount of messages`',inline = False)
+        embed.add_field(name = '.uptime',value = '`Returns bot uptime`',inline = False)
+        embed.add_field(name = '.meme',value = '`Returns meme from reddit`',inline = False)
+        await ctx.send(embed = embed)
     
     @commands.command()
     @commands.bot_has_permissions(manage_messages=True)
@@ -86,7 +95,6 @@ class Example(commands.Cog):
             await ctx.send(f'{days}d, {hours}h, {minutes}m, {seconds}s')
 
     @commands.command()
-    @commands.bot_has_permissions(send_messages=True)
     async def ping(self,ctx):
         message = await ctx.send("Pong!")
         ping = self.client.latency
