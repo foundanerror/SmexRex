@@ -24,4 +24,3 @@ class Events(commands.Cog):
 
 def setup(client):
     client.add_cog(Events(client))
-    print("setup")

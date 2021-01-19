@@ -21,7 +21,6 @@ class Example(commands.Cog):
         self.client = client
         client.remove_command("help")
         self.launch_time = datetime.utcnow()
-        print(self.launch_time)
 
     
     @commands.command()
@@ -56,7 +55,6 @@ class Example(commands.Cog):
         embed.set_footer(text=f'Memes From Reddit, UpVote: 👍{upvotes}')
         embed.set_author(name = 'Gay Haven', icon_url=icon)
         embed.set_image(url = str(link))
-        embed.set_thumbnail(url = icon)
         await ctx.send(embed = embed)
         #await ctx.send(file=f)
 
@@ -103,4 +101,3 @@ class Example(commands.Cog):
 
 def setup(client):
     client.add_cog(Example(client))
-    print("setup")
