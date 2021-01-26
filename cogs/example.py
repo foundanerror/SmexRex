@@ -6,7 +6,8 @@ import praw
 import io
 import sqlite3
 from datetime import datetime
-import time
+from time import time
+
 
 
 conn = sqlite3.connect("bot_memes.db")
@@ -93,21 +94,37 @@ class Example(commands.Cog):
             await ctx.send(f'{days}d, {hours}h, {minutes}m, {seconds}s')
 
     @commands.command()
+    @commands.cooldown(1,5,commands.BucketType.category)
     async def ping(self,ctx):
+        start = time()
         message = await ctx.send("Pong!")
-        ping = self.client.latency * 1000
-        await message.edit(content=f"Pong!  `{int(ping)}ms`")
-        print(f'Ping {int(ping)}ms')
+        end = time()
+        await message.edit(content=f"Pong! `{self.client.latency * 1000:,.0f}ms`, Response Time {(end-start)*1000:,.0f}")
 
     @commands.command(aliases = ['NumberGenerator'])
     async def randomNumber(self,ctx):
         Nums = [1,2,3,4,6,7,8,9,0]
         strl = ''
+        
         for i in Nums:
             strl = strl + str(random.choice(Nums))
+            
             if i == 3 or i == 7:
                 strl = strl + ','
         await ctx.send(strl)
+
+    @commands.command()
+    async def guild(self, ctx):
+        guilds  = self.client.guilds
+        string = ''
+        n = 0
+        for i in guilds:
+            n = n + 1
+            string = string + f"Name: {i}; MemberCount: {i.member_count}"
+            if n >= 1 and n <= (len(guilds) -1):
+                string = string + ', '
+        await ctx.send(string)
+
 
 def setup(client):
     client.add_cog(Example(client))

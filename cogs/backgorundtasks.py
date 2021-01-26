@@ -18,9 +18,10 @@ class Events(commands.Cog):
 
     @tasks.loop(seconds=10)
     async def change_status(self):
-        await self.client.change_presence(activity=discord.Activity(type= discord.ActivityType.watching,name= f'Over {len(self.client.guilds)} Servers'))
+        game = discord.Game("with the API")
+        await self.client.change_presence(status=discord.Status.do_not_disturb,activity=discord.Activity(type= discord.ActivityType.playing,name= f'Over {len(self.client.guilds)} Servers'))
     
-    
+
 
 def setup(client):
     client.add_cog(Events(client))
