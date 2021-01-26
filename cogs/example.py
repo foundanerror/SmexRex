@@ -95,9 +95,19 @@ class Example(commands.Cog):
     @commands.command()
     async def ping(self,ctx):
         message = await ctx.send("Pong!")
-        ping = self.client.latency
+        ping = self.client.latency * 1000
         await message.edit(content=f"Pong!  `{int(ping)}ms`")
         print(f'Ping {int(ping)}ms')
+
+    @commands.command(aliases = ['NumberGenerator'])
+    async def randomNumber(self,ctx):
+        Nums = [1,2,3,4,6,7,8,9,0]
+        strl = ''
+        for i in Nums:
+            strl = strl + str(random.choice(Nums))
+            if i == 3 or i == 7:
+                strl = strl + ','
+        await ctx.send(strl)
 
 def setup(client):
     client.add_cog(Example(client))

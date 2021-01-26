@@ -3,7 +3,7 @@ from discord.ext import commands, tasks
 import praw
 
 
-client = commands.Bot(command_prefix = "../", intents=discord.Intents.all())
+client = commands.Bot(command_prefix = "!", intents=discord.Intents.all())
 
 @client.command()
 async def load(ctx, extension):
@@ -17,8 +17,19 @@ async def unload(ctx, extension):
     
 @client.command()
 async def reload(ctx, extension):
-    client.reload_extension(f'cogs.{extension}')
-    await ctx.send(f"Reloading {extension}.py")            
+    if str(extension) == 'all':
+        for filename in os.listdir('./cogs'):
+            if filename.endswith(".py"):
+                client.reload_extension(f'cogs.{filename[:-3]}')
+                print(f"Loading: {filename}")
+    else:
+        try:
+            client.reload_extension(f'cogs.{extension}')
+            await ctx.send(f"Reloading {extension}.py")
+        except:
+            await ctx.send('Error occured reloading extension')       
+
+         
     
 
 #f
