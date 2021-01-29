@@ -18,7 +18,7 @@ class Events(commands.Cog):
 
     @tasks.loop(seconds=10)
     async def change_status(self):
-        await self.client.change_presence(activity=discord.Activity(type= discord.ActivityType.watching,name= f'Over {len(self.client.guilds)} Servers'))
+        await self.client.change_presence(activity=discord.Activity(type= discord.ActivityType.watching,name= f'Over {len(self.client.guilds)} Servers, Prefix: !'))
     
     
 
