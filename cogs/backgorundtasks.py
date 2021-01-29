@@ -14,7 +14,7 @@ class Events(commands.Cog):
     async def on_ready(self):
         print("Bot is online.")
         self.change_status.start()
-
+    
 
     @tasks.loop(seconds=10)
     async def change_status(self):

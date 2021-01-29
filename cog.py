@@ -32,7 +32,7 @@ async def reload(ctx, extension):
          
     
 
-#f
+
 
 for filename in os.listdir('./cogs'):
     if filename.endswith(".py"):

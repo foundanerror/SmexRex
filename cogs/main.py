@@ -6,7 +6,8 @@ import praw
 import io
 import sqlite3
 from datetime import datetime
-import time
+from time import time
+
 
 
 conn = sqlite3.connect("bot_memes.db")
@@ -16,7 +17,11 @@ c.execute("SELECT * FROM bot_memes")
 limit = c.fetchall()
 conn.commit()
 
-class Example(commands.Cog):
+def to_upper(argument):
+    print(argument)
+    return argument.upper()
+
+class Main(commands.Cog):
     def __init__(self, client):
         self.client = client
         client.remove_command("help")
@@ -31,7 +36,6 @@ class Example(commands.Cog):
 
         c.execute(f"SELECT * FROM bot_memes WHERE rowid = {meme}")
         items = c.fetchall()
-        icon = ctx.guild.icon_url
         link = items[0][0]
         name = items[0][1]
         author = items[0][2]
@@ -49,11 +53,11 @@ class Example(commands.Cog):
         embed = discord.Embed(
             title = name,
             description = f"[{author}](https://www.reddit.com{permaLink})",
-            colour = discord.Colour.green(),
+            colour = discord.Colour.from_rgb(47,49,54) ,
             timestamp = datetime.utcnow()
         )
-        embed.set_footer(text=f'Memes From Reddit, UpVote: 👍{upvotes}')
-        embed.set_author(name = 'Gay Haven', icon_url=icon)
+        embed.set_footer(text=f'Memes From Reddit, Upvote: 👍{upvotes}')
+        embed.set_author(name = 'SmexRex', icon_url='https://media.discordapp.net/attachments/754414804361281598/804127527509295134/image0.png')
         embed.set_image(url = str(link))
         await ctx.send(embed = embed)
         #await ctx.send(file=f)
@@ -63,9 +67,10 @@ class Example(commands.Cog):
         embed = discord.Embed(
             title = 'Help',
             description = 'Commands listed below',
-            colour = discord.Colour.green(),
+            colour = discord.Colour.from_rgb(47,49,54),
             timestamp = datetime.utcnow()
         )
+        embed.set_author(name = 'SmexRex', icon_url='https://media.discordapp.net/attachments/754414804361281598/804127527509295134/image0.png')
         embed.add_field(name = '../ping',value = '`Returns bot latency`',inline = False)
         embed.add_field(name = '../purge',value = '`Purges Specified amount of messages`',inline = False)
         embed.add_field(name = '../uptime',value = '`Returns bot uptime`',inline = False)
@@ -93,21 +98,49 @@ class Example(commands.Cog):
             await ctx.send(f'{days}d, {hours}h, {minutes}m, {seconds}s')
 
     @commands.command()
+    @commands.cooldown(1,5,commands.BucketType.category)
     async def ping(self,ctx):
+        start = time()
         message = await ctx.send("Pong!")
-        ping = self.client.latency * 1000
-        await message.edit(content=f"Pong!  `{int(ping)}ms`")
-        print(f'Ping {int(ping)}ms')
+        end = time()
+        await message.edit(content=f"Pong! `{self.client.latency * 1000:,.0f}ms`, Response Time {(end-start)*1000:,.0f}")
 
     @commands.command(aliases = ['NumberGenerator'])
     async def randomNumber(self,ctx):
         Nums = [1,2,3,4,6,7,8,9,0]
         strl = ''
+        
         for i in Nums:
             strl = strl + str(random.choice(Nums))
+            
             if i == 3 or i == 7:
                 strl = strl + ','
         await ctx.send(strl)
 
+    @commands.command()
+    async def guild(self, ctx):
+        guilds  = self.client.guilds
+        embed = discord.Embed(
+            title = 'Guilds',
+            colour = discord.Colour.from_rgb(47,49,54),
+            timestamp = datetime.utcnow()
+        )
+        embed.set_author(name = 'SmexRex', icon_url='https://media.discordapp.net/attachments/754414804361281598/804127527509295134/image0.png')
+        for i in guilds:
+            embed.add_field(name = f'{i}',value = f'`{i.member_count}`',inline = False)
+
+        await ctx.author.send(embed = embed)
+
+    @commands.command()
+    async def up(self,ctx, *, content: to_upper):
+        embed = discord.Embed(
+            title = 'Up',
+            description = f'{str(content)}',
+            colour = discord.Colour.from_rgb(47,49,54) ,
+            timestamp = datetime.utcnow()
+        )
+        embed.set_author(name = 'SmexRex', icon_url='https://media.discordapp.net/attachments/754414804361281598/804127527509295134/image0.png')
+        await ctx.send(embed = embed)
+
 def setup(client):
-    client.add_cog(Example(client))
+    client.add_cog(Main(client))

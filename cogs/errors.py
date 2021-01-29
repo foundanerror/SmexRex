@@ -12,7 +12,12 @@ class Errors(commands.Cog):
     @commands.Cog.listener()
     async def on_command_error(self,ctx,error):
         try:
-           await ctx.send(error)
+            embed = discord.Embed(
+                title = 'Error',
+                description = f'{str(error)}',
+                colour = discord.Colour.from_rgb(47,49,54) ,
+                timestamp = datetime.utcnow())
+            await ctx.send(embed = embed)
         except:
             print('error')
     
