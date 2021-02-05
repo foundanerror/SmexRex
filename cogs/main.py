@@ -32,42 +32,32 @@ class Main(commands.Cog):
     
     @commands.command()
     async def meme(self,ctx):
-        #l = len(limit)
-        #meme = random.randint(1, l)
+        l = len(limit)
+        meme = random.randint(1, l)
         
 
-        #c.execute(f"SELECT * FROM bot_memes WHERE rowid = {meme}")
-        #items = c.fetchall()
-        #link = items[0][0]
-        #name = items[0][1]
-       # author = items[0][2]
-        #permaLink = items[0][3]
-        #upvotes = items[0][4]
+        c.execute(f"SELECT * FROM bot_memes WHERE rowid = {meme}")
+        items = c.fetchall()
+        link = items[0][0]
+        name = items[0][1]
+        author = items[0][2]
+        permaLink = items[0][3]
+        upvotes = items[0][4]
 
         #r = requests.get(link, stream=True)
         
-        #image_bytes = io.BytesIO(r.content)
-
-        #create a file object in discordpy library
-        #f = discord.File(image_bytes, 'meme.png')
-
-        #send image in the channel
-
-        table = []
-        subreddit = await reddit.subreddit("memes")
-        async for submission in subreddit.hot(limit=1000):
-            table.append(tuple([submission.title,submission.permalink,submission.url,submission.author,submission.score]))
-
-
-        randoml = random.randint(1,len(table))
-
-        name = table[randoml][0]
-        permalink = table[randoml][1]
-        url = table[randoml][2]
-        author = table[randoml][3]
-        score = table[randoml][4]
-
-        print(name,permalink,url,author,score)
+        
+        embed = discord.Embed(
+            title = name,
+            description = f"[{author}](https://www.reddit.com{permaLink})",
+            colour = discord.Colour.from_rgb(47,49,54) ,
+            timestamp = datetime.utcnow()
+        )
+        embed.set_footer(text=f'Memes From Reddit, Upvote: 👍{upvotes}')
+        embed.set_author(name = 'SmexRex', icon_url='https://media.discordapp.net/attachments/754414804361281598/804127527509295134/image0.png')
+        embed.set_image(url = str(link))
+        await ctx.send(embed = embed)
+        
         
         #await ctx.send(file=f)
 
