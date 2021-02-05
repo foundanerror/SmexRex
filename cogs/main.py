@@ -147,16 +147,16 @@ class Main(commands.Cog):
 
         for i in guild.channels:
             print('called')
-            if str(i) == 'hi':
-                    existing_channel = discord.utils.get(guild.channels, name=i)
+            if str(i) == str(context):
+                    existing_channel = discord.utils.get(guild.channels, name=context)
                     # if the channel exists
                     if existing_channel is not None:
                         await existing_channel.delete()
                     # if the channel does not exist, inform the user
                     else:
-                        await ctx.send(f'No channel named, "{i}", was found')
+                        await ctx.send(f'No channel named, "{context}", was found')
             else:
-                print('nah')
+                await ctx.send(f'No channel named, "{context}", was found')
 
 def setup(client):
     client.add_cog(Main(client))
