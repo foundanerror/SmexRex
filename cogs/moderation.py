@@ -7,7 +7,7 @@ from itertools import cycle
 class Moderation(commands.Cog):
     def __init__(self, client):
         self.client = client
-
+        client.remove_command("help")
 
     @commands.command()
     async def joined(self,ctx, member: discord.Member):

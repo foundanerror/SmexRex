@@ -152,7 +152,7 @@ class Main(commands.Cog):
         await ctx.send(embed = embed)
 
     @commands.command()
-    async def delete(self,ctx):
+    async def delete(self,ctx,*,context):
         guild = ctx.message.guild
 
         for i in guild.channels:
