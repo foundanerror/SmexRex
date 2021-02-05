@@ -1,6 +1,6 @@
 import discord, os
 from discord.ext import commands, tasks
-import praw
+import asyncpraw
 
 
 client = commands.Bot(command_prefix = "!", intents=discord.Intents.all())

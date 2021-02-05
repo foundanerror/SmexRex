@@ -2,13 +2,15 @@ import discord
 from discord.ext import commands
 import random
 import requests
-import praw
+import asyncpraw
 import io
 import sqlite3
 from datetime import datetime
 from time import time
 
-
+reddit = asyncpraw.Reddit(client_id = "K00Ni5DBXdefSQ", 
+                    client_secret = "jpsli9Y2WXZjoybxs5pufLgd0teRWg",
+                    user_agent = 'SmartSlayer1')
 
 conn = sqlite3.connect("bot_memes.db")
 c = conn.cursor()
@@ -30,17 +32,17 @@ class Main(commands.Cog):
     
     @commands.command()
     async def meme(self,ctx):
-        l = len(limit)
-        meme = random.randint(1, l)
+        #l = len(limit)
+        #meme = random.randint(1, l)
         
 
-        c.execute(f"SELECT * FROM bot_memes WHERE rowid = {meme}")
-        items = c.fetchall()
-        link = items[0][0]
-        name = items[0][1]
-        author = items[0][2]
-        permaLink = items[0][3]
-        upvotes = items[0][4]
+        #c.execute(f"SELECT * FROM bot_memes WHERE rowid = {meme}")
+        #items = c.fetchall()
+        #link = items[0][0]
+        #name = items[0][1]
+       # author = items[0][2]
+        #permaLink = items[0][3]
+        #upvotes = items[0][4]
 
         #r = requests.get(link, stream=True)
         
@@ -50,16 +52,23 @@ class Main(commands.Cog):
         #f = discord.File(image_bytes, 'meme.png')
 
         #send image in the channel
-        embed = discord.Embed(
-            title = name,
-            description = f"[{author}](https://www.reddit.com{permaLink})",
-            colour = discord.Colour.from_rgb(47,49,54) ,
-            timestamp = datetime.utcnow()
-        )
-        embed.set_footer(text=f'Memes From Reddit, Upvote: 👍{upvotes}')
-        embed.set_author(name = 'SmexRex', icon_url='https://media.discordapp.net/attachments/754414804361281598/804127527509295134/image0.png')
-        embed.set_image(url = str(link))
-        await ctx.send(embed = embed)
+
+        table = []
+        subreddit = await reddit.subreddit("memes")
+        async for submission in subreddit.hot(limit=1000):
+            table.append(tuple([submission.title,submission.permalink,submission.url,submission.author,submission.score]))
+
+
+        randoml = random.randint(1,len(table))
+
+        name = table[randoml][0]
+        permalink = table[randoml][1]
+        url = table[randoml][2]
+        author = table[randoml][3]
+        score = table[randoml][4]
+
+        print(name,permalink,url,author,score)
+        
         #await ctx.send(file=f)
 
     @commands.command()
@@ -141,6 +150,23 @@ class Main(commands.Cog):
         )
         embed.set_author(name = 'SmexRex', icon_url='https://media.discordapp.net/attachments/754414804361281598/804127527509295134/image0.png')
         await ctx.send(embed = embed)
+
+    @commands.command()
+    async def delete(self,ctx):
+        guild = ctx.message.guild
+
+        for i in guild.channels:
+            print('called')
+            if str(i) == 'hi':
+                    existing_channel = discord.utils.get(guild.channels, name=i)
+                    # if the channel exists
+                    if existing_channel is not None:
+                        await existing_channel.delete()
+                    # if the channel does not exist, inform the user
+                    else:
+                        await ctx.send(f'No channel named, "{i}", was found')
+            else:
+                print('nah')
 
 def setup(client):
     client.add_cog(Main(client))
