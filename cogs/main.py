@@ -144,19 +144,21 @@ class Main(commands.Cog):
     @commands.command()
     async def delete(self,ctx,*,context):
         guild = ctx.message.guild
-
+        deleted = False
         for i in guild.channels:
-            print('called')
             if str(i) == str(context):
                     existing_channel = discord.utils.get(guild.channels, name=context)
                     # if the channel exists
                     if existing_channel is not None:
                         await existing_channel.delete()
+                        deleted = True
                     # if the channel does not exist, inform the user
                     else:
                         await ctx.send(f'No channel named, "{context}", was found')
-            else:
-                await ctx.send(f'No channel named, "{context}", was found')
+        if deleted == True:
+            await ctx.send(f"Deleted {context}")
+        elif deleted == False:
+            await ctx.send(f'No channel named, "{context}", was found')
 
 def setup(client):
     client.add_cog(Main(client))
