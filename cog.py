@@ -39,4 +39,4 @@ for filename in os.listdir('./cogs'):
         client.load_extension(f'cogs.{filename[:-3]}')
         print(f"Loading: {filename}")
 
-client.run("Nzk2NTExNjE3NzE3NzY0MTQ3.X_Y_QA.kdguQgmEIfRkt1vC6wqDzuxQBxw")
+client.run("Token")
